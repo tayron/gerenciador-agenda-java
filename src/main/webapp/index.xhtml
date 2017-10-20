@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Agenda</title>
+        <link type="text/css" rel="stylesheet" href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-bootstrap" />
+    </h:head>
+    <h:body>
+        <f:view>
+            
+            <h:form>
+                <!-- COMPONENTE QUE EXIBE AS MENSAGENS PARA O USUÁRIO -->
+                <p:growl id="growl" showDetail="true" sticky="true" autoUpdate="true" />
+
+                <!-- MODAL DA TELA DE CADASTRO E EDIÇÃO-->
+                <p:dialog header="Contato" widgetVar="formularioContato" showEffect="fade" hideEffect="fade" minHeight="40">            
+                    <h:inputHidden value="#{contatoBean.contato.id}" id="formularioContatoColunaId"/>
+                    <h:panelGrid columns="4" cellpadding="5">
+                        
+                        <p:outputLabel value="Nome"/><br />                        
+                        <p:inputText value="#{contatoBean.contato.nome}" id="formularioContatoColunaNome" />
+                        <p:commandButton action="#{contatoBean.salvarContato()}" value="Salvar" update="tabelaContatos,formularioContatoColunaNome" icon="ui-icon-check" />                    
+                    </h:panelGrid>
+                </p:dialog>
+                
+                <!-- MODAL DA TELA DE CONFIRMAÇÃO DE EXCLUSÃO -->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                </p:confirmDialog>
+                
+                <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE CONTATOS -->
+                <p:dataTable
+                        id="tabelaContatos"
+                        var="contato" 
+                        value="#{contatoBean.listaContatos}" rows="10"
+                        paginator="true"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="5,10,15"
+                        sortMode="multiple"
+                >
+                    <f:facet name="header">
+                        Lista de contatos
+
+                        <p:commandButton value="Novo Contato" type="button" onclick="PF('formularioContato').show()" style="float:right"/>
+                        <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="tabelaContatos" trigger="toggler" />
+                    </f:facet>
+
+                    <p:column headerText="Id" sortBy="#{contato.id}" width="5%">
+                        <h:outputText value="#{contato.id}" />
+                    </p:column>
+
+                    <p:column headerText="Nome" sortBy="#{contato.nome}" width="85%">
+                        <h:outputText value="#{contato.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Ação" width="10%" style="text-align: center">
+                        <p:commandButton actionListener="#{contatoBean.excluirContato(contato)}" update="tabelaContatos" icon="ui-icon-close">
+                            <p:confirm header="Excluir Contato" message="Tem certeza que deseja excluir o contato: # #{contato.id} - #{contato.nome} ?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        
+                        <p:commandButton actionListener="#{contatoBean.setContato(contato)}" oncomplete="PF('formularioContato').show()" icon="ui-icon-pencil" process="@this" update="@form:formularioContatoColunaNome,@form:formularioContatoColunaId" />
+                    </p:column>
+                </p:dataTable>            
+            </h:form>
+        </f:view>
+    </h:body>
+</html>
