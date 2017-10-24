@@ -31,41 +31,53 @@
                     <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
                     <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
                 </p:confirmDialog>
+
+                <p:panel header="Lista de contatos">
+                    <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE CONTATOS -->
+                    <p:dataTable
+                            id="tabelaContatos"
+                            var="contato" 
+                            value="#{contatoBean.listaContatos}" rows="10"
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15"
+                            paginatorPosition="bottom"
+                            sortMode="multiple"
+                            emptyMessage="Nenhum registro encontrado"
+                    >
+                        <p:column headerText="Id" sortBy="#{contato.id}" width="5%">
+                            <h:outputText value="#{contato.id}" />
+                        </p:column>
+
+                        <p:column headerText="Nome" sortBy="#{contato.nome}" filterBy="#{contato.nome}" width="85%" styleClass="ui-fluid">
+                            <h:outputText value="#{contato.nome}" />
+                        </p:column>
+
+                        <p:column headerText="Ação" width="10%" style="text-align: center">
+                            <p:commandButton actionListener="#{contatoBean.excluirContato(contato)}" update="tabelaContatos" icon="ui-icon-close">
+                                <p:confirm header="Excluir Contato" message="Tem certeza que deseja excluir o contato: # #{contato.id} - #{contato.nome} ?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                            <p:commandButton actionListener="#{contatoBean.setContato(contato)}" oncomplete="PF('formularioContato').show()" icon="ui-icon-pencil" process="@this" update="@form:formularioContatoColunaNome,@form:formularioContatoColunaId" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
                 
-                <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE CONTATOS -->
-                <p:dataTable
-                        id="tabelaContatos"
-                        var="contato" 
-                        value="#{contatoBean.listaContatos}" rows="10"
-                        paginator="true"
-                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                        rowsPerPageTemplate="5,10,15"
-                        sortMode="multiple"
-                >
-                    <f:facet name="header">
-                        Lista de contatos
+                <br /><br />
+                
+                <!-- BOTOES PARA CONTROLE DOS DADOS DO CONTATO -->
+                <p:commandButton value="Novo Contato" type="button" onclick="PF('formularioContato').show()" style="float:right" icon="ui-icon-plus">
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                </p:commandButton>
+                
+                <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator">
+                    <p:columnToggler datasource="tabelaContatos" trigger="toggler" /> 
+                </p:commandButton>
 
-                        <p:commandButton value="Novo Contato" type="button" onclick="PF('formularioContato').show()" style="float:right"/>
-                        <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="tabelaContatos" trigger="toggler" />
-                    </f:facet>
-
-                    <p:column headerText="Id" sortBy="#{contato.id}" width="5%">
-                        <h:outputText value="#{contato.id}" />
-                    </p:column>
-
-                    <p:column headerText="Nome" sortBy="#{contato.nome}" width="85%">
-                        <h:outputText value="#{contato.nome}" />
-                    </p:column>
-
-                    <p:column headerText="Ação" width="10%" style="text-align: center">
-                        <p:commandButton actionListener="#{contatoBean.excluirContato(contato)}" update="tabelaContatos" icon="ui-icon-close">
-                            <p:confirm header="Excluir Contato" message="Tem certeza que deseja excluir o contato: # #{contato.id} - #{contato.nome} ?" icon="ui-icon-alert" />
-                        </p:commandButton>
-                        
-                        <p:commandButton actionListener="#{contatoBean.setContato(contato)}" oncomplete="PF('formularioContato').show()" icon="ui-icon-pencil" process="@this" update="@form:formularioContatoColunaNome,@form:formularioContatoColunaId" />
-                    </p:column>
-                </p:dataTable>            
+                <!-- EFEITO DE LOADING PARA MOSTRAR QUE UMA AÇÃO ESTÁ SENDO PROCESSADA -->
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage value="img/ajax-loader.gif" />
+                </p:dialog>                
             </h:form>
         </f:view>
     </h:body>
