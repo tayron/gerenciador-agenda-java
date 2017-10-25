@@ -117,8 +117,7 @@ public class ContatoBean extends BeanAbstrato implements Serializable{
     public void excluirContato(Contato contato){
 
         try{
-            Contato contatoContexto = contatoDao.buscarPorId(contato.getId());
-            contatoDao.remover(contatoContexto);
+            contatoDao.remover(contato);
             listaContatos = contatoDao.buscarTodos();
             setMensagemSucesso("Contato excluído com sucesso");
         }catch(Exception e){
