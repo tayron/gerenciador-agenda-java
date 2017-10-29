@@ -22,9 +22,12 @@
                 <p:menubar>
                     <p:menuitem value="Home" url="/index.xhtml" icon="ui-icon-close" />
                     
-                    <p:submenu label="Agenda" icon="ui-icon-pencil">
-                        <p:menuitem value="Index" url="/admin/agenda/index.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
-                    </p:submenu>
+                    <p:menuitem value="Contato" url="/admin/contato/index.xhtml" icon="ui-icon-close" />
+                    
+                    <p:submenu label="Usuário" icon="ui-icon-pencil">
+                        <p:menuitem value="Gerenciar Usuário" url="/admin/usuario/index.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:menuitem value="Gerenciar Grupo" url="/admin/grupo/index.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                    </p:submenu>                    
 
                     <f:facet name="options">
                         <p:inputText style="margin-right:10px" placeholder="Procurar"/>

@@ -30,7 +30,7 @@ public class Contato extends EntidadeAbstrata {
     private String nome;
 
     /**
-     * Seta o nome do contato
+     * Retorna o nome do contato
      * 
      * @return nome Nome do contato
      */

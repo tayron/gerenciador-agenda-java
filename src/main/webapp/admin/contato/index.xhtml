@@ -18,13 +18,13 @@
                 <p:growl id="growl" showDetail="true" sticky="true" autoUpdate="true" />
 
                 <!-- MODAL DA TELA DE CADASTRO E EDIÇÃO-->
-                <p:dialog header="Contato" widgetVar="formularioContato" showEffect="fade" hideEffect="fade" minHeight="40">            
-                    <h:inputHidden value="#{contatoBean.contato.id}" id="formularioContatoColunaId"/>
+                <p:dialog header="Contato" widgetVar="formulario" showEffect="fade" hideEffect="fade" minHeight="40">            
+                    <h:inputHidden value="#{contatoBean.contato.id}" id="campoId"/>
                     <h:panelGrid columns="4" cellpadding="5">
                         
                         <p:outputLabel value="Nome"/><br />                        
-                        <p:inputText value="#{contatoBean.contato.nome}" id="formularioContatoColunaNome" />
-                        <p:commandButton action="#{contatoBean.salvarContato()}" value="Salvar" update="tabelaContatos,formularioContatoColunaNome" icon="ui-icon-check" />                    
+                        <p:inputText value="#{contatoBean.contato.nome}" id="campoNome" />
+                        <p:commandButton action="#{contatoBean.salvarContato()}" value="Salvar" update="tabela,campoNome" icon="ui-icon-check" />                    
                     </h:panelGrid>
                 </p:dialog>
                 
@@ -37,7 +37,7 @@
                 <p:panel header="Lista de contatos">
                     <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE CONTATOS -->
                     <p:dataTable
-                            id="tabelaContatos"
+                            id="tabela"
                             var="contato" 
                             value="#{contatoBean.listaContatos}" rows="10"
                             paginator="true"
@@ -56,11 +56,11 @@
                         </p:column>
 
                         <p:column headerText="Ação" width="10%" style="text-align: center">
-                            <p:commandButton actionListener="#{contatoBean.excluirContato(contato)}" update="tabelaContatos" icon="ui-icon-close">
+                            <p:commandButton actionListener="#{contatoBean.excluirContato(contato)}" update="tabela" icon="ui-icon-close">
                                 <p:confirm header="Excluir Contato" message="Tem certeza que deseja excluir o contato: # #{contato.id} - #{contato.nome} ?" icon="ui-icon-alert" />
                             </p:commandButton>
 
-                            <p:commandButton actionListener="#{contatoBean.setContato(contato)}" oncomplete="PF('formularioContato').show()" icon="ui-icon-pencil" process="@this" update="@form:formularioContatoColunaNome,@form:formularioContatoColunaId" />
+                            <p:commandButton actionListener="#{contatoBean.setContato(contato)}" oncomplete="PF('formulario').show()" icon="ui-icon-pencil" process="@this" update="@form:campoNome,@form:campoId" />
                         </p:column>
                     </p:dataTable>
                 </p:panel>
@@ -68,17 +68,17 @@
                 <br /><br />
                 
                 <!-- BOTOES PARA CONTROLE DOS DADOS DO CONTATO -->
-                <p:commandButton value="Novo Contato" type="button" onclick="PF('formularioContato').show()" style="float:right" icon="ui-icon-plus">
+                <p:commandButton value="Novo Contato" type="button" onclick="PF('formulario').show()" style="float:right" icon="ui-icon-plus">
                     <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
                 </p:commandButton>
                 
                 <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator">
-                    <p:columnToggler datasource="tabelaContatos" trigger="toggler" /> 
+                    <p:columnToggler datasource="tabela" trigger="toggler" /> 
                 </p:commandButton>
 
                 <!-- EFEITO DE LOADING PARA MOSTRAR QUE UMA AÇÃO ESTÁ SENDO PROCESSADA -->
                 <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-                    <p:graphicImage value="img/ajax-loader.gif" />
+                    <p:graphicImage value="/img/ajax-loader.gif" />
                 </p:dialog>                
             </h:form>
         </f:view>
