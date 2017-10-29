@@ -3,82 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
     <h:head>
         <title>Agenda</title>
         <link type="text/css" rel="stylesheet" href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-bootstrap" />
     </h:head>
     <h:body>
         <f:view>
-            
-            <h:form>
-                <!-- COMPONENTE QUE EXIBE AS MENSAGENS PARA O USUÁRIO -->
-                <p:growl id="growl" showDetail="true" sticky="true" autoUpdate="true" />
-
-                <!-- MODAL DA TELA DE CADASTRO E EDIÇÃO-->
-                <p:dialog header="Contato" widgetVar="formularioContato" showEffect="fade" hideEffect="fade" minHeight="40">            
-                    <h:inputHidden value="#{contatoBean.contato.id}" id="formularioContatoColunaId"/>
-                    <h:panelGrid columns="4" cellpadding="5">
-                        
-                        <p:outputLabel value="Nome"/><br />                        
-                        <p:inputText value="#{contatoBean.contato.nome}" id="formularioContatoColunaNome" />
-                        <p:commandButton action="#{contatoBean.salvarContato()}" value="Salvar" update="tabelaContatos,formularioContatoColunaNome" icon="ui-icon-check" />                    
-                    </h:panelGrid>
-                </p:dialog>
-                
-                <!-- MODAL DA TELA DE CONFIRMAÇÃO DE EXCLUSÃO -->
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-                </p:confirmDialog>
-
-                <p:panel header="Lista de contatos">
-                    <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE CONTATOS -->
-                    <p:dataTable
-                            id="tabelaContatos"
-                            var="contato" 
-                            value="#{contatoBean.listaContatos}" rows="10"
-                            paginator="true"
-                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="5,10,15"
-                            paginatorPosition="bottom"
-                            sortMode="multiple"
-                            emptyMessage="Nenhum registro encontrado"
-                    >
-                        <p:column headerText="Id" sortBy="#{contato.id}" width="5%">
-                            <h:outputText value="#{contato.id}" />
-                        </p:column>
-
-                        <p:column headerText="Nome" sortBy="#{contato.nome}" filterBy="#{contato.nome}" width="85%" styleClass="ui-fluid">
-                            <h:outputText value="#{contato.nome}" />
-                        </p:column>
-
-                        <p:column headerText="Ação" width="10%" style="text-align: center">
-                            <p:commandButton actionListener="#{contatoBean.excluirContato(contato)}" update="tabelaContatos" icon="ui-icon-close">
-                                <p:confirm header="Excluir Contato" message="Tem certeza que deseja excluir o contato: # #{contato.id} - #{contato.nome} ?" icon="ui-icon-alert" />
-                            </p:commandButton>
-
-                            <p:commandButton actionListener="#{contatoBean.setContato(contato)}" oncomplete="PF('formularioContato').show()" icon="ui-icon-pencil" process="@this" update="@form:formularioContatoColunaNome,@form:formularioContatoColunaId" />
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-                
-                <br /><br />
-                
-                <!-- BOTOES PARA CONTROLE DOS DADOS DO CONTATO -->
-                <p:commandButton value="Novo Contato" type="button" onclick="PF('formularioContato').show()" style="float:right" icon="ui-icon-plus">
-                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
-                </p:commandButton>
-                
-                <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator">
-                    <p:columnToggler datasource="tabelaContatos" trigger="toggler" /> 
-                </p:commandButton>
-
-                <!-- EFEITO DE LOADING PARA MOSTRAR QUE UMA AÇÃO ESTÁ SENDO PROCESSADA -->
-                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-                    <p:graphicImage value="img/ajax-loader.gif" />
-                </p:dialog>                
-            </h:form>
+            <componentes:menu />
         </f:view>
     </h:body>
 </html>
