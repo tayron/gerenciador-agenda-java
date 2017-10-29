@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:componentes="http://java.sun.com/jsf/composite/componentes">
     <h:head>
-        <title>Agenda - Grupo</title>
+        <title>Agenda - Usuário</title>
         <link type="text/css" rel="stylesheet" href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-bootstrap" />
     </h:head>
     <h:body>
@@ -18,13 +18,13 @@
                 <p:growl id="growl" showDetail="true" sticky="true" autoUpdate="true" />
 
                 <!-- MODAL DA TELA DE CADASTRO E EDIÇÃO-->
-                <p:dialog header="Grupo" widgetVar="formulario" showEffect="fade" hideEffect="fade" minHeight="40">            
-                    <h:inputHidden value="#{grupoBean.grupo.id}" id="campoId"/>
+                <p:dialog header="Usuário" widgetVar="formulario" showEffect="fade" hideEffect="fade" minHeight="40">
+                    <h:inputHidden value="#{usuarioBean.usuario.id}" id="campoId"/>
                     <h:panelGrid columns="4" cellpadding="5">
                         
                         <p:outputLabel value="Nome"/><br />                        
-                        <p:inputText value="#{grupoBean.grupo.nome}" id="campoNome" />
-                        <p:commandButton action="#{grupoBean.salvarGrupo()}" value="Salvar" update="tabela,campoNome" icon="ui-icon-check" />                    
+                        <p:inputText value="#{usuarioBean.usuario.nome}" id="campoNome" />
+                        <p:commandButton action="#{usuarioBean.salvarUsuario()}" value="Salvar" update="tabela,campoNome" icon="ui-icon-check" />                    
                     </h:panelGrid>
                 </p:dialog>
                 
@@ -34,12 +34,12 @@
                     <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
                 </p:confirmDialog>
 
-                <p:panel header="Lista de grupos de usuários">
-                    <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE GRUPOS -->
+                <p:panel header="Lista de usuarios">
+                    <!-- COMPONENTE DATATABLE QUE EXIBE A LISTA DE USUÁRIOS -->
                     <p:dataTable
                             id="tabela"
-                            var="grupo" 
-                            value="#{grupoBean.listaGrupos}" rows="10"
+                            var="usuario" 
+                            value="#{usuarioBean.listaUsuarios}" rows="10"
                             paginator="true"
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="5,10,15"
@@ -47,32 +47,32 @@
                             sortMode="multiple"
                             emptyMessage="Nenhum registro encontrado"
                     >
-                        <p:column headerText="Id" sortBy="#{grupo.id}" width="5%">
-                            <h:outputText value="#{grupo.id}" />
+                        <p:column headerText="Id" sortBy="#{usuario.id}" width="5%">
+                            <h:outputText value="#{usuario.id}" />
                         </p:column>
 
-                        <p:column headerText="Nome" sortBy="#{grupo.nome}" filterBy="#{grupo.nome}" width="85%" styleClass="ui-fluid">
-                            <h:outputText value="#{grupo.nome}" />
+                        <p:column headerText="Nome" sortBy="#{usuario.nome}" filterBy="#{usuario.nome}" width="85%" styleClass="ui-fluid">
+                            <h:outputText value="#{usuario.nome}" />
                         </p:column>
 
                         <p:column headerText="Ação" width="10%" style="text-align: center">
-                            <p:commandButton actionListener="#{grupoBean.excluirGrupo(grupo)}" update="tabela" icon="ui-icon-close">
-                                <p:confirm header="Excluir Grupo" message="Tem certeza que deseja excluir o grupo: # #{grupo.id} - #{grupo.nome} ?" icon="ui-icon-alert" />
+                            <p:commandButton actionListener="#{usuarioBean.excluirUsuario(usuario)}" update="tabela" icon="ui-icon-close">
+                                <p:confirm header="Excluir Grupo" message="Tem certeza que deseja excluir o usuario: # #{usuario.id} - #{usuario.nome} ?" icon="ui-icon-alert" />
                             </p:commandButton>
 
-                            <p:commandButton actionListener="#{grupoBean.setGrupo(grupo)}" oncomplete="PF('formulario').show()" icon="ui-icon-pencil" process="@this" update="@form:campoNome,@form:campoId" />
+                            <p:commandButton actionListener="#{usuarioBean.setUsuario(usuario)}" oncomplete="PF('formulario').show()" icon="ui-icon-pencil" process="@this" update="@form:campoNome,@form:campoId" />
                         </p:column>
                     </p:dataTable>
                 </p:panel>
                 
                 <br /><br />
                 
-                <!-- BOTOES PARA CONTROLE DOS DADOS DO GRUPO DE USUÁRIO -->
-                <p:commandButton value="Novo Grupo" type="button" onclick="PF('formulario').show()" style="float:right" icon="ui-icon-plus">
+                <!-- BOTOES PARA CONTROLE DOS DADOS DO USUÁRIO -->
+                <p:commandButton value="Novo Usuário" type="button" onclick="PF('formulario').show()" style="float:right" icon="ui-icon-plus">
                     <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
                 </p:commandButton>
                 
-                <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator">
+                <p:commandButton id="toggler" value="Colunas" style="float:right" icon="ui-icon-calculator">
                     <p:columnToggler datasource="tabela" trigger="toggler" /> 
                 </p:commandButton>
 
